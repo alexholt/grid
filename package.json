@@ -1,0 +1,42 @@
+{
+  "name": "EmptyWebApp",
+  "version": "0.0.0",
+  "description": "Empty CoffeeScript/Express project that's ready for you to start coding.",
+  "main": "app.coffee",
+  "scripts": {
+    "test": "grunt test",
+    "start": "coffee app.coffee"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/alexholt/EmptyWebApp"
+  },
+  "keywords": [
+    "empty",
+    "blank",
+    "template",
+    "project"
+  ],
+  "author": "Alex Holt",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/alexholt/EmptyWebApp/issues"
+  },
+  "homepage": "https://github.com/alexholt/EmptyWebApp",
+  "dependencies": {
+    "express": "*",
+    "jade": "*",
+    "minimist": "*",
+    "mongoose": "*",
+    "stylus": "*"
+  },
+  "devDependencies": {
+    "chai": "*",
+    "grunt": "*",
+    "grunt-contrib-coffee": "*",
+    "grunt-contrib-watch": "*",
+    "grunt-mocha-test": "*",
+    "mocha": "*",
+    "sinon": "*"
+  }
+}
