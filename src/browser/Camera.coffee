@@ -1,14 +1,16 @@
-class Camera
+class Camera extends Model
 
   constructor: (aspectRatio) ->
-    @perspectiveMatrix = @makePerspective 60, aspectRatio, 0.01, 500
+    super
+    @mvMatrix = @makePerspective 60, aspectRatio, 0.01, 500
 
   makePerspective: (fovy, aspect, znear, zfar) ->
     ymax = znear * Math.tan fovy * Math.PI / 360
     ymin = -ymax
     xmin = ymin * aspect
     xmax = ymax * aspect
-    @makeFrustum xmin, xmax, ymin, ymax, znear, zfar
+    @mvMatrix = @makeFrustum xmin, xmax, ymin, ymax, znear, zfar
+    @mvMatrix
 
   makeFrustum: (left, right, bottom, top, znear, zfar) ->
     X = 2 * znear / (right - left)
@@ -23,6 +25,6 @@ class Camera
          [0,  0, -1,  0] ])
  
   getPerspectiveMatrix: ->
-    @perspectiveMatrix
-  
+    @mvMatrix
+
 module.exports = Camera if module?

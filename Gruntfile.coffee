@@ -21,7 +21,7 @@ module.exports = (grunt) ->
         options:
           sourceMap: true
         files:
-          'public/index.js': ['src/browser/*.coffee']
+          'public/index.js': ['src/browser/Model.coffee', 'src/browser/*.coffee']
 
   grunt.registerTask 'default', 'watch'
   grunt.registerTask 'build', 'coffee'

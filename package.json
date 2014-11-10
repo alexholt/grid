@@ -36,6 +36,7 @@
     "grunt-contrib-coffee": "*",
     "grunt-contrib-watch": "*",
     "grunt-mocha-test": "*",
+    "grunt-rehab": "*",
     "mocha": "*",
     "sinon": "*"
   }
