@@ -34,12 +34,9 @@ class Context
         @startingCoords = endingCoords
       else
         @startingCoords = null
-      console.log "(#{deltaX}, #{deltaY})"
 
   attachKeyboardHandlers: ->
     $(window).on 'keydown', (event) =>
-      console.log event.keyCode
-      console.dir event
       if event.keyCode == 38 # Up
         if event.shiftKey
           @control.translate 0, 0, 1
@@ -77,7 +74,6 @@ class Context
     @control = model
     @attachClickHandlers()
     @attachKeyboardHandlers()
-    
-
+  
 if module?
   module.exports = Context

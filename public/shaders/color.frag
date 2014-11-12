@@ -1,10 +1,15 @@
 precision highp float;
-varying lowp vec4 vColor;
 
 uniform float time;
-float yCoord;
+uniform float viewportWidth;
 
 void main(void) {
-  gl_FragColor = vec4(time, gl_FragCoord.y + gl_FragCoord.x / 2.0, time, 1.0);
-  //gl_FragColor = vColor; 
+  float y = gl_FragCoord.y / viewportWidth;
+  float x = gl_FragCoord.x / viewportWidth;
+  float deltaTime = x - time;
+  if (deltaTime < 0.0)
+    deltaTime = -deltaTime;
+  if (deltaTime <= 0.6 && 0.7 >= deltaTime)
+    y = 1.0;
+  gl_FragColor = vec4(y, x, y, 1.0);
 }

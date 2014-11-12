@@ -9,6 +9,7 @@ class Renderer
       @camera = new Camera @context.getAspectRatio()
       @shaderProgram = @shaderManager.getProgram()
       @time = @gl.getUniformLocation @shaderProgram, "time"
+      @viewportWidth = @gl.getUniformLocation @shaderProgram, "viewportWidth"
       @colorTime = 0.0
       @isMovingUp = true
       @delta = 0.01
@@ -23,13 +24,14 @@ class Renderer
   getCamera: ->
     @camera
 
-  renderLoop: =>
+  renderLoop: (timestamp) =>
     @isMovingUp = false if @colorTime >= 1.0
     @isMovingUp = true if @colorTime <= 0.0
     if @isMovingUp
       @colorTime += @delta
     else
       @colorTime -= @delta
+    @gl.uniform1f @viewportWidth, 2000
     @gl.uniform1f @time, @colorTime
     @drawScene()
     window.requestAnimationFrame @renderLoop
@@ -39,7 +41,7 @@ class Renderer
     @setMatrixUniforms(
       @gl, background.getShader(), @camera.getPerspectiveMatrix(), background.getMatrix()
     )
-    @gl.lineWidth 10.0
+    @gl.lineWidth 1.0
     @gl.drawArrays @gl.LINES, 0, background.getIndexDataSize()
 
   drawScene: ->
@@ -47,7 +49,7 @@ class Renderer
     models = @scene.getModels()
     @drawBackground models.background
     #@camera.rotate 0.1
-    @drawCubes()
+    #@drawCubes()
 
   drawCubes: ->
     models = @scene.getModels()
