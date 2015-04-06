@@ -1,6 +1,10 @@
 class Renderer
 
+  FRAMERATE_SAMPLE_SIZE: 20
+
   constructor: (@context) ->
+    @isPlaying = no
+    @counter = 0
 
   init: (cb) ->
     @shaderManager = new ShaderManager @context.getGL(), 'color.frag', 'position.vert'
@@ -24,16 +28,25 @@ class Renderer
   getCamera: ->
     @camera
 
+  trackFramerate: (timestamp) ->
+    if ++@counter == @FRAMERATE_SAMPLE_SIZE
+      @counter = 0
+      $('#framerate').text (20 * 1000 / (timestamp - @lastTimestamp)).toFixed 2
+      @lastTimestamp = timestamp
+
   renderLoop: (timestamp) =>
+    @trackFramerate timestamp if window.grid.config.trackFramerate
     @isMovingUp = false if @colorTime >= 1.0
     @isMovingUp = true if @colorTime <= 0.0
     if @isMovingUp
       @colorTime += @delta
     else
       @colorTime -= @delta
-    @gl.uniform1f @viewportWidth, 2000
-    @gl.uniform1f @time, @colorTime
-    @drawScene()
+    if @isPlaying
+      @gl.uniform1f @viewportWidth, 2000
+      @gl.uniform1f @time, @colorTime
+    else
+      @drawScene()
     window.requestAnimationFrame @renderLoop
 
   drawBackground: (background) ->
@@ -49,7 +62,7 @@ class Renderer
     models = @scene.getModels()
     @drawBackground models.background
     #@camera.rotate 0.1
-    #@drawCubes()
+    @drawCubes()
 
   drawCubes: ->
     models = @scene.getModels()
@@ -72,7 +85,6 @@ class Renderer
 
   setMatrixUniforms: (gl, shaderProgram, pMatrix, mvMatrix) ->
     pUniform = gl.getUniformLocation(shaderProgram, "uPMatrix")
-    debugger
     gl.uniformMatrix4fv(pUniform, false, new Float32Array(pMatrix.flatten()))
     mvUniform = gl.getUniformLocation(shaderProgram, "uMVMatrix")
     gl.uniformMatrix4fv(mvUniform, false, new Float32Array(mvMatrix.flatten()))

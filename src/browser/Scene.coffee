@@ -11,11 +11,11 @@ class Scene
     [ x, y, z ] = [ @X, @Y, @Z ]
     @background.translate x, y, z
     @cubes = []
-    for i in [0...100]
+    for i in [0...window.grid.config.cubeColumns]
       y = @Y
       z = @Z
       x += 4
-      for j in [0...40]
+      for j in [0...window.grid.config.cubeRows]
         y -= 4
         cube = new Cube shader
         @cubes.push cube.translate(x, y, z)

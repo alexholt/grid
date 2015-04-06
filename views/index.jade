@@ -1,8 +1,35 @@
 html
   head 
     title GridGL
+    style.
+      * {
+        margin: 0;
+        padding: 0;
+      }
+
+      button.fullscreen {
+        background: transparent;
+        position: absolute;
+        bottom: 5px;
+        left: 0;
+        border: none;
+        color: rgba(100, 100, 100, 0.4);
+      }
+
+      button.fullscreen:hover {
+        color: rgba(100, 100, 100, 1.0);
+      }
+
+      #framerate {
+        color: white;
+        position: absolute;
+        top: 0;
+        right: 0;
+      }
   body
     canvas(id="glcanvas") Your browser does not suppport the canvas element.
+    #framerate 60
+    button.fullscreen Fullscreen
     script(src="assets/lib/jquery/dist/jquery.min.js")
     script(src="assets/lib/sylvester/sylvester.js")
     script(src="assets/lib/glUtils.js")

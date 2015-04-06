@@ -5,6 +5,7 @@ class Context
 
   init: ->
     @resizeCanvas()
+    @isFullscreen = no
     @initWebGL @$element[0]
     @gl.clearColor 0.0, 0.0, 0.0, 1.0
     @gl.enable @gl.DEPTH_TEST
@@ -12,6 +13,7 @@ class Context
     @gl.clear @gl.COLOR_BUFFER_BIT | @gl.DEPTH_BUFFER_BIT
     @gl.blendFunc @gl.SRC_ALPHA, @gl.ONE
     @resizeViewport()
+    @attachResizeHandler()
 
   resizeCanvas: ->
     width = $('body').width()
@@ -19,12 +21,17 @@ class Context
     @$element.attr 'width', width
     @$element.attr 'height', height
 
+  attachResizeHandler: ->
+    $(window).on 'resize orientationchange', =>
+      @resizeCanvas()
+      @resizeViewport()
+
   attachClickHandlers: ->
     @$element.off 'mousedown mousemove mouseup'
     [gridX, gridY] = [@$element.width(), @$element.height()]
     @$element.on 'mousedown', (event) =>
       @startingCoords = [ event.offsetX, event.offsetY ]
-    @$element.on 'mouseup mousemove', (event) =>
+    @$element.on 'mouseup mousemove mouseout', (event) =>
       return unless @startingCoords?
       endingCoords = [ event.offsetX, event.offsetY ]
       deltaX = endingCoords[0] - @startingCoords[0]
@@ -35,6 +42,24 @@ class Context
         @startingCoords = endingCoords
       else
         @startingCoords = null
+
+  attachFullscreenHandler: ->
+    $('button.fullscreen').off('click').on 'click', =>
+      @isFullscreen = not @isFullscreen
+      element = @$element[0]
+      if @isFullscreen
+        if element.requestFullscreen
+          element.requestFullscreen()
+        else if element.msRequestFullscreen
+          element.msRequestFullscreen()
+        else if element.mozRequestFullScreen
+          element.mozRequestFullScreen()
+        else if element.webkitRequestFullscreen
+          element.webkitRequestFullscreen()
+        @resizeCanvas()
+        @resizeViewport()
+      else
+        console.error 'nothing'
 
   attachKeyboardHandlers: ->
     $(window).on 'keydown', (event) =>
@@ -75,6 +100,7 @@ class Context
     @control = model
     @attachClickHandlers()
     @attachKeyboardHandlers()
+    @attachFullscreenHandler()
   
 if module?
   module.exports = Context
