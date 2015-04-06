@@ -2,6 +2,7 @@ class Camera extends Model
 
   constructor: (aspectRatio) ->
     super
+    @location = $V([0, 0, 0])
     @mvMatrix = @makePerspective 60, aspectRatio, 0.01, 500
 
   makePerspective: (fovy, aspect, znear, zfar) ->
@@ -10,7 +11,6 @@ class Camera extends Model
     xmin = ymin * aspect
     xmax = ymax * aspect
     @mvMatrix = @makeFrustum xmin, xmax, ymin, ymax, znear, zfar
-    @mvMatrix
 
   makeFrustum: (left, right, bottom, top, znear, zfar) ->
     X = 2 * znear / (right - left)
@@ -26,5 +26,8 @@ class Camera extends Model
  
   getPerspectiveMatrix: ->
     @mvMatrix
+
+  getLocation: ->
+    @location
 
 module.exports = Camera if module?

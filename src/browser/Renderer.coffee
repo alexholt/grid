@@ -54,18 +54,14 @@ class Renderer
   drawCubes: ->
     models = @scene.getModels()
     for model in models.cubes
-      model.pushMatrix()
-      model.translate 0, 0, Math.random() * 1
       @setBuffers model
       @setMatrixUniforms @gl, model.getShader(), @camera.getPerspectiveMatrix(), model.getMatrix()
       @gl.drawElements @gl.TRIANGLES, model.getIndexDataSize(), @gl.UNSIGNED_SHORT, 0
-      model.popMatrix()
     
   setBackgroundBuffers: (model) ->
     @gl.bindBuffer @gl.ARRAY_BUFFER, @gl.createBuffer()
     @gl.bufferData @gl.ARRAY_BUFFER, model.getVertexData(), @gl.STATIC_DRAW
     @gl.vertexAttribPointer @shaderManager.getVertexPositionAttribute(), 3, @gl.FLOAT, false, 0, 0
-
 
   setBuffers: (model) ->
     @gl.bindBuffer @gl.ARRAY_BUFFER, @gl.createBuffer()
@@ -76,6 +72,7 @@ class Renderer
 
   setMatrixUniforms: (gl, shaderProgram, pMatrix, mvMatrix) ->
     pUniform = gl.getUniformLocation(shaderProgram, "uPMatrix")
+    debugger
     gl.uniformMatrix4fv(pUniform, false, new Float32Array(pMatrix.flatten()))
     mvUniform = gl.getUniformLocation(shaderProgram, "uMVMatrix")
     gl.uniformMatrix4fv(mvUniform, false, new Float32Array(mvMatrix.flatten()))

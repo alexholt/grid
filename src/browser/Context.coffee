@@ -29,6 +29,7 @@ class Context
       endingCoords = [ event.offsetX, event.offsetY ]
       deltaX = endingCoords[0] - @startingCoords[0]
       deltaY = endingCoords[1] - @startingCoords[1]
+      @control.getPerspectiveMatrix()
       @control.translate deltaX / 3, -deltaY / 3, 0
       if event.type == 'mousemove'
         @startingCoords = endingCoords

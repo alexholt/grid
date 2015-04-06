@@ -11,8 +11,8 @@ class Background extends Model
     lines = 20
     for i in [0...lines]
       @VERTICES = @VERTICES.concat [
-        separation * i, 0, -1,
-        separation * i, verticalSpan, -1
+        separation * i, 0, 0,
+        separation * i, verticalSpan, 0
       ]
     @VERTEX_INDICES = @VERTEX_INDICES.concat [0...lines * 2]
 
@@ -20,7 +20,12 @@ class Background extends Model
     lines = 20
     for i in [0...lines]
       @VERTICES = @VERTICES.concat [
-        500, -separation * i + startingY, -1,
-        horizontalSpan, -separation * i + startingY, -1
+        500, -separation * i + startingY, 0,
+        horizontalSpan, -separation * i + startingY, 0
       ]
     @VERTEX_INDICES = @VERTEX_INDICES.concat [0...lines * 2]
+
+  createBackdrop: ->
+    @backdrop = new Billboard @shader
+    @backdrop.translate 0, 0, -10
+    
