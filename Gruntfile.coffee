@@ -25,3 +25,12 @@ module.exports = (grunt) ->
 
   grunt.registerTask 'default', 'watch'
   grunt.registerTask 'build', 'coffee'
+  grunt.registerTask 'help', ->
+    console.info '''
+
+      Available Commands
+      ------------------
+      [watch] Watches files and recompiles
+      [build] Compiles
+      [help] Prints this helpful message
+    '''
