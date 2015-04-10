@@ -3,7 +3,7 @@ class Renderer
   FRAMERATE_SAMPLE_SIZE: 20
 
   constructor: (@context) ->
-    @isPlaying = no
+    @isPlaying = yes
     @counter = 0
 
   init: (cb) ->
@@ -14,9 +14,6 @@ class Renderer
       @shaderProgram = @shaderManager.getProgram()
       @time = @gl.getUniformLocation @shaderProgram, "time"
       @viewportWidth = @gl.getUniformLocation @shaderProgram, "viewportWidth"
-      @colorTime = 0.0
-      @isMovingUp = true
-      @delta = 0.01
       cb() if cb?
 
   render: (@scene) ->
@@ -36,17 +33,10 @@ class Renderer
 
   renderLoop: (timestamp) =>
     @trackFramerate timestamp if window.grid.config.trackFramerate
-    @isMovingUp = false if @colorTime >= 1.0
-    @isMovingUp = true if @colorTime <= 0.0
-    if @isMovingUp
-      @colorTime += @delta
-    else
-      @colorTime -= @delta
     if @isPlaying
       @gl.uniform1f @viewportWidth, 2000
-      @gl.uniform1f @time, @colorTime
-    else
-      @drawScene()
+      @gl.uniform1f @time, Math.sin(timestamp / 1000)
+    @drawScene()
     window.requestAnimationFrame @renderLoop
 
   drawBackground: (background) ->
@@ -60,14 +50,14 @@ class Renderer
   drawScene: ->
     @gl.clear @gl.COLOR_BUFFER_BIT | @gl.DEPTH_BUFFER_BIT
     models = @scene.getModels()
-    @drawBackground models.background
+    #@drawBackground models.background
     #@camera.rotate 0.1
     @drawCubes()
 
   drawCubes: ->
     models = @scene.getModels()
+    @setBuffers models.cubes[0]
     for model in models.cubes
-      @setBuffers model
       @setMatrixUniforms @gl, model.getShader(), @camera.getPerspectiveMatrix(), model.getMatrix()
       @gl.drawElements @gl.TRIANGLES, model.getIndexDataSize(), @gl.UNSIGNED_SHORT, 0
     

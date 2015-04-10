@@ -16,10 +16,8 @@ class Context
     @attachResizeHandler()
 
   resizeCanvas: ->
-    width = $('body').width()
-    height = $('body').height()
-    @$element.attr 'width', width
-    @$element.attr 'height', height
+    @$element.attr 'width', window.innerWidth
+    @$element.attr 'height', window.innerHeight
 
   attachResizeHandler: ->
     $(window).on 'resize orientationchange', =>
@@ -58,8 +56,6 @@ class Context
           element.webkitRequestFullscreen()
         @resizeCanvas()
         @resizeViewport()
-      else
-        console.error 'nothing'
 
   attachKeyboardHandlers: ->
     $(window).on 'keydown', (event) =>
@@ -78,9 +74,13 @@ class Context
       else if event.keyCode == 37 # Left
         @control.translate 1, 0, 0
 
+    $(window).scroll (event) =>
+      console.dir event
+      @control.translate 0, 0, 1
+
   resizeViewport: ->
-    width = $('body').width()
-    height = $('body').height()
+    width = window.innerWidth
+    height = window.innerHeight
     @aspectRatio = width / height
     @gl.viewport 0, 0, width, height
 

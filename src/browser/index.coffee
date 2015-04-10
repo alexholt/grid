@@ -4,8 +4,8 @@ if window?
   window.grid =
     config:
       trackFramerate: on
-      cubeColumns: 10
-      cubeRows: 10
+      cubeColumns: 32
+      cubeRows: 32
 
 start = ->
   context = new Context $('#glcanvas')
@@ -14,7 +14,10 @@ start = ->
   renderer.init ->
     scene.createCubes renderer.getShader()
     context.setControllable renderer.getCamera()
-    renderer.render(scene)
+    renderer.render scene
+    window.grid.context = context
+    window.grid.scene = scene
+    window.grid.renderer = renderer
 
 if window?
   window.addEventListener 'DOMContentLoaded', start
