@@ -16,6 +16,8 @@ class Context
     @attachResizeHandler()
 
   resizeCanvas: ->
+    @$element.width window.innderWidth
+    @$element.height window.innderHeight
     @$element.attr 'width', window.innerWidth
     @$element.attr 'height', window.innerHeight
 
@@ -60,12 +62,16 @@ class Context
   attachKeyboardHandlers: ->
     $(window).on 'keydown', (event) =>
       if event.keyCode == 38 # Up
-        if event.shiftKey
+        if event.altKey
+          @control.rotate 0.1
+        else if event.shiftKey
           @control.translate 0, 0, 1
         else
           @control.translate 0, -1, 0
       else if event.keyCode == 40 # Down
-        if event.shiftKey
+        if event.altKey
+          @control.rotate -0.1
+        else if event.shiftKey
           @control.translate 0, 0, -1
         else
           @control.translate 0, 1, 0
@@ -74,7 +80,8 @@ class Context
       else if event.keyCode == 37 # Left
         @control.translate 1, 0, 0
 
-    $(window).scroll (event) =>
+    $(document).on 'scroll', (event) =>
+      event.preventDefault()
       console.dir event
       @control.translate 0, 0, 1
 

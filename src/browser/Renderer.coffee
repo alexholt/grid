@@ -5,6 +5,7 @@ class Renderer
   constructor: (@context) ->
     @isPlaying = yes
     @counter = 0
+    @cubeColors = new CubeColors(grid.config.cubeColumns)
 
   init: (cb) ->
     @shaderManager = new ShaderManager @context.getGL(), 'color.frag', 'position.vert'
@@ -14,6 +15,7 @@ class Renderer
       @shaderProgram = @shaderManager.getProgram()
       @time = @gl.getUniformLocation @shaderProgram, "time"
       @viewportWidth = @gl.getUniformLocation @shaderProgram, "viewportWidth"
+      @cubeColor = @gl.getUniformLocation @shaderProgram, "cubeColor"
       cb() if cb?
 
   render: (@scene) ->
@@ -49,16 +51,18 @@ class Renderer
 
   drawScene: ->
     @gl.clear @gl.COLOR_BUFFER_BIT | @gl.DEPTH_BUFFER_BIT
-    models = @scene.getModels()
-    #@drawBackground models.background
+    @drawBackground @scene.getModels().background
     #@camera.rotate 0.1
     @drawCubes()
 
   drawCubes: ->
     models = @scene.getModels()
     @setBuffers models.cubes[0]
-    for model in models.cubes
+    total = models.cubes.length
+    @cubeColors.update()
+    for model, i in models.cubes
       @setMatrixUniforms @gl, model.getShader(), @camera.getPerspectiveMatrix(), model.getMatrix()
+      @gl.uniform3f @cubeColor, @cubeColors.get(i)...
       @gl.drawElements @gl.TRIANGLES, model.getIndexDataSize(), @gl.UNSIGNED_SHORT, 0
     
   setBackgroundBuffers: (model) ->

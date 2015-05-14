@@ -1,12 +1,3 @@
-if window?
-  if window.grid?
-    throw '[window.grid] already defined?!'
-  window.grid =
-    config:
-      trackFramerate: on
-      cubeColumns: 32
-      cubeRows: 32
-
 start = ->
   context = new Context $('#glcanvas')
   renderer = new Renderer context
@@ -20,4 +11,12 @@ start = ->
     window.grid.renderer = renderer
 
 if window?
+  if window.grid?
+    throw '[window.grid] already defined?!'
+  window.grid =
+    config:
+      trackFramerate: on
+      cubeColumns: 32
+      cubeRows: 32
+
   window.addEventListener 'DOMContentLoaded', start
