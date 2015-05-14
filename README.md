@@ -1,3 +1,2 @@
-GridGL
-=====
-A groovy WebGL grid.
+# grid
+A grid to enjoy
