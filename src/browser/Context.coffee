@@ -80,10 +80,12 @@ class Context
       else if event.keyCode == 37 # Left
         @control.translate 1, 0, 0
 
-    $(document).on 'scroll', (event) =>
-      event.preventDefault()
-      console.dir event
-      @control.translate 0, 0, 1
+  attachMouseWheelHandler: ->
+    $(window).on 'mousewheel', (event) =>
+      { deltaX, deltaY } = event.originalEvent
+      [ deltaX, deltaY ] = [ deltaX, deltaY ].map (delta) ->
+        delta /= -100
+      @control.translate 0, 0, deltaY
 
   resizeViewport: ->
     width = window.innerWidth
@@ -108,6 +110,7 @@ class Context
     @attachClickHandlers()
     @attachKeyboardHandlers()
     @attachFullscreenHandler()
+    @attachMouseWheelHandler()
   
 if module?
   module.exports = Context

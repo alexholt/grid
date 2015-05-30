@@ -5,7 +5,8 @@
   "main": "app.coffee",
   "scripts": {
     "test": "grunt test",
-    "start": "coffee app.coffee"
+    "start": "coffee app.coffee",
+    "postinstall": "node node_modules/bower/bin/bower install" 
   },
   "repository": {
     "type": "git",
@@ -24,6 +25,7 @@
   },
   "homepage": "https://github.com/alexholt/EmptyWebApp",
   "dependencies": {
+    "bower": "*",
     "express": "*",
     "jade": "*",
     "minimist": "*",

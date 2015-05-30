@@ -1,0 +1,19 @@
+button.fullscreen {
+  background: transparent;
+  position: absolute;
+  bottom: 5px;
+  left: 0;
+  border: none;
+  color: rgba(100, 100, 100, 0.4);
+}   
+
+button.fullscreen:hover {
+  color: rgba(100, 100, 100, 1.0);
+}   
+
+#framerate {
+  color: white;
+  position: absolute;
+  top: 0;
+  right: 0;
+}  
