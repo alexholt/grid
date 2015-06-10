@@ -4,6 +4,8 @@ class Model
     @mvMatrix = Matrix.I(4)
     @vertices = new Float32Array @VERTICES
     @indices = new Uint16Array @VERTEX_INDICES
+    @up = Vector.create [0, 0, 1]
+    @forward = Vector.create [0, 1, 0]
 
   getVertexData: ->
     @vertices
@@ -40,7 +42,7 @@ class Model
     @
 
   rotate: (r) ->
-    @mvMatrix = @mvMatrix.x Matrix.Rotation(r, Vector.create([1, 1, 1])).ensure4x4()
+    @mvMatrix = @mvMatrix.x Matrix.Rotation(r, @up).ensure4x4()
     @
 
   scale: (s) ->
