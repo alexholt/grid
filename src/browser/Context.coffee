@@ -1,11 +1,13 @@
 class Context
 
   constructor: (@$element) ->
+    @isInit = no
+    @isFullscreen = no
     @init()
+    @$element.on 'contextmenu', (event) -> event.preventDefault()
 
   init: ->
     @resizeCanvas()
-    @isFullscreen = no
     @initWebGL @$element[0]
     @gl.clearColor 0.0, 0.0, 0.0, 1.0
     @gl.enable @gl.DEPTH_TEST
@@ -13,7 +15,7 @@ class Context
     @gl.clear @gl.COLOR_BUFFER_BIT | @gl.DEPTH_BUFFER_BIT
     @gl.blendFunc @gl.SRC_ALPHA, @gl.ONE
     @resizeViewport()
-    @attachResizeHandler()
+    @isInit = yes
 
   resizeCanvas: ->
     @$element.width window.innderWidth
@@ -21,10 +23,8 @@ class Context
     @$element.attr 'width', window.innerWidth
     @$element.attr 'height', window.innerHeight
 
-  attachResizeHandler: ->
-    $(window).on 'resize orientationchange', =>
-      @resizeCanvas()
-      @resizeViewport()
+  handleResize: =>
+    @init() if @isInit
 
   attachClickHandlers: ->
     @$element.off 'mousedown mousemove mouseup'
@@ -82,6 +82,7 @@ class Context
 
   attachMouseWheelHandler: ->
     $(window).on 'mousewheel', (event) =>
+      event.preventDefault()
       { deltaX, deltaY } = event.originalEvent
       [ deltaX, deltaY ] = [ deltaX, deltaY ].map (delta) ->
         delta /= -100
@@ -100,10 +101,11 @@ class Context
     @aspectRatio
 
   initWebGL: (canvas) ->
+    return if @gl?
     try
       @gl = canvas.getContext 'webgl'
     catch e
-      throw new Error "WebGL failed to initialize #{e.message()}"
+      throw new Error "WebGL failed to initialize #{e.message}"
 
   setControllable: (model) ->
     @control = model
@@ -112,5 +114,4 @@ class Context
     @attachFullscreenHandler()
     @attachMouseWheelHandler()
   
-if module?
-  module.exports = Context
+module.exports = Context if module?

@@ -3,9 +3,9 @@ class Camera extends Model
   constructor: (aspectRatio) ->
     super
     @location = $V([0, 0, 0])
-    @mvMatrix = @makePerspective 60, aspectRatio, 0.01, 500
+    @makePerspective 60, aspectRatio
 
-  makePerspective: (fovy, aspect, znear, zfar) ->
+  makePerspective: (fovy, aspect, znear = 0.01, zfar = 500) ->
     ymax = znear * Math.tan fovy * Math.PI / 360
     ymin = -ymax
     xmin = ymin * aspect

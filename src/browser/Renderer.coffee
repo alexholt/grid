@@ -5,7 +5,7 @@ class Renderer
   constructor: (@context) ->
     @isPlaying = yes
     @counter = 0
-    @cubeColors = new CubeColors(grid.config.cubeColumns)
+    @cubeColors = new CubeColors grid.config.cubeColumns
 
   init: (cb) ->
     @shaderManager = new ShaderManager @context.getGL(), 'color.frag', 'position.vert'
@@ -28,7 +28,7 @@ class Renderer
     @camera
 
   trackFramerate: (timestamp) ->
-    if ++@counter == @FRAMERATE_SAMPLE_SIZE
+    if ++@counter is @FRAMERATE_SAMPLE_SIZE
       @counter = 0
       $('#framerate').text (20 * 1000 / (timestamp - @lastTimestamp)).toFixed 2
       @lastTimestamp = timestamp
