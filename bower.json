@@ -13,7 +13,7 @@
     "spec"
   ],
   "dependencies": {
-    "h5bp": "*",
+    "html5-boilerplate": "*",
     "sylvester": "*",
     "jquery": "*"
   }
