@@ -14,7 +14,7 @@ module.exports = (grunt) ->
     watch:
       scripts:
         files: ['spec/**/*.coffee', 'src/**/*.coffee']
-        tasks: ['coffee', 'mochaTest']
+        tasks: ['coffee']
 
     coffee:
       compileWithMaps:
@@ -25,6 +25,7 @@ module.exports = (grunt) ->
 
   grunt.registerTask 'default', 'watch'
   grunt.registerTask 'build', 'coffee'
+  grunt.registerTask 'test', 'mochaTest'
   grunt.registerTask 'help', ->
     console.info '''
 
