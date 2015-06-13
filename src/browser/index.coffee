@@ -6,11 +6,19 @@ start = ->
   renderer.init ->
     scene.createCubes renderer.getShader()
     context.setControllable renderer.getCamera()
-    renderer.render scene
+    renderer.setScene scene
     window.grid.context = context
     window.grid.scene = scene
     window.grid.renderer = renderer
 
+    # Main Loop
+    main = (timestamp) ->
+      renderer.render timestamp
+      window.requestAnimationFrame main
+
+    window.requestAnimationFrame main
+
+  # Handle resize
   $(window).on 'resize orientationchange', =>
     event.preventDefault()
     console.info "Resizing viewport"
@@ -23,7 +31,13 @@ if window?
   window.grid =
     config:
       trackFramerate: on
-      cubeColumns: 32
-      cubeRows: 32
+      cubeColumns: 16
+      cubeRows: 16
 
   window.addEventListener 'DOMContentLoaded', start
+
+if navigator?
+  navigator.getUserMedia = navigator.getUserMedia ?
+    navigator.webkitGetUserMedia ?
+    navigator.mozGetUserMedia
+

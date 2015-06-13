@@ -5,7 +5,7 @@ class Camera extends Model
     @location = $V([0, 0, 0])
     @makePerspective 60, aspectRatio
 
-  makePerspective: (fovy, aspect, znear = 0.01, zfar = 500) ->
+  makePerspective: (fovy, aspect, znear = 0.01, zfar = 20000) ->
     ymax = znear * Math.tan fovy * Math.PI / 360
     ymin = -ymax
     xmin = ymin * aspect
