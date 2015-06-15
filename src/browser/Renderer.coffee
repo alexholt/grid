@@ -17,9 +17,8 @@ class Renderer
       @viewportWidth = @gl.getUniformLocation @shaderProgram, "viewportWidth"
       @cubeColor = @gl.getUniformLocation @shaderProgram, "cubeColor"
       cb() if cb?
-
-  render: (@scene) ->
-    @renderLoop()
+  
+  setScene: (@scene) ->
 
   getShader: ->
     @shaderManager.getProgram()
@@ -33,13 +32,12 @@ class Renderer
       $('#framerate').text (20 * 1000 / (timestamp - @lastTimestamp)).toFixed 2
       @lastTimestamp = timestamp
 
-  renderLoop: (timestamp) =>
+  render: (timestamp) =>
     @trackFramerate timestamp if window.grid.config.trackFramerate
     if @isPlaying
       @gl.uniform1f @viewportWidth, 2000
       @gl.uniform1f @time, Math.sin(timestamp / 1000)
     @drawScene()
-    window.requestAnimationFrame @renderLoop
 
   drawBackground: (background) ->
     @setBackgroundBuffers background
